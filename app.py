@@ -41,6 +41,7 @@ def analysedata():
 #---------------------------------------GOLD medals----------------------------------------------------------------------
     st.subheader('Top 50 Cuntries with Gold medals')
     teamdata=df1.head(50)
+    st.dataframe(teamdata)
     st.plotly_chart(px.bar(data_frame=teamdata,x='Team/NOC',y='Gold',template='seaborn',color='Team/NOC',width=900))
     st.markdown('# ')
 ##-------------------------------------Silver MEdals--------------------------------------------------------------------
@@ -53,6 +54,9 @@ def analysedata():
     teamdata=df1.head(50)
     st.plotly_chart(px.bar(data_frame=teamdata,x='Team/NOC',y='Bronze',template='seaborn',color='Team/NOC',width=900))
     st.markdown('# ')
+    #---------------------------------TOTAL MEDALS BY DIFFFERENT COUNTRIES--------------------------------------
+    st.header('All the different with their total medals') 
+    st.plotly_chart(px.scatter_3d(teamdata,x='Gold',y='Silver',z='Bronze',color='Team/NOC',color_discrete_sequence=px.colors.sequential.haline))
 ##----------------------------------name of coutries according to discipline-----------------------------------------------   
     st.header('NO. of countries according to Sports')
     discdata=df.groupby('Discipline',as_index=False).count()
@@ -74,21 +78,19 @@ def analysedata():
     st.markdown('# ')
     st.subheader('Number of Events Sports wise ')
 
-    st.plotly_chart(px.histogram(data_frame=eventdata,x='Event',y='Discipline',color='NOC',template='plotly_dark'))
+    st.plotly_chart(px.histogram(data_frame=eventdata,x='Discipline',y='Event',color='NOC',template='plotly_dark'))
  #-------------------------------------Coaches------------------------------------------   
     st.header(' Coutnries with highest  number  of Coaches ')
     st.subheader('Top 10 countires with higherst number of coaches')
     coachdata=df4.groupby('NOC',as_index=False ).count()
-    coachdata.sort_values('Name',ascending=False)
-    coachdata.head(10)
+    coachdata=coachdata.sort_values('Name',ascending=False)
     st.plotly_chart(px.pie(coachdata.head(10),values='Name',names='NOC',hover_name='NOC',color_discrete_sequence=px.colors.sequential.RdBu))
     st.markdown('# ')
     st.header('Countries and their number of coaches')
-    st.plotly_chart(px.line(coachdata,x='NOC',y='Name',height=500,markers=True,color='Event',color_discrete_sequence=px.colors.sequential.RdBu))
+    st.plotly_chart(px.bar(coachdata,x='NOC',y='Name',height=500,color='Event',title='Countries with their number of coaches',color_discrete_sequence=px.colors.sequential.RdBu))
 
 
 if selection=='View Dataset':
-    st.balloons()
     showData()
 elif selection=='View Analyse':
     st.balloons()
